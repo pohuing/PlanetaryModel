@@ -80,7 +80,6 @@ void Engine::Mainloop()
 	m_shaderprogramm.SetProjectionMatrix(projection);
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
-	float speed = 0.001;
 	while (!glfwWindowShouldClose(m_window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -92,41 +91,28 @@ void Engine::Mainloop()
 
 		if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
 		{
-			m_camera.MoveRelative(glm::vec3(-speed, 0.f, 0.f));
+			m_camera.MoveRelative(glm::vec3(1, 0.f, 0.f));
 		}
 		if (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
 		{
-			m_camera.MoveRelative(glm::vec3(speed, 0.f, 0.f));
+			m_camera.MoveRelative(glm::vec3(-1, 0.f, 0.f));
 			//x -= 0.1f;
 		}
 		if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
 		{
-			m_camera.MoveRelative(glm::vec3(0.0f, 0.f, speed));
+			m_camera.MoveRelative(glm::vec3(0.0f, 0.f, 1));
 		}
 		if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS)
 		{
-			m_camera.MoveRelative(glm::vec3(0.f, 0.f, -speed));
-		}
-		if (glfwGetKey(m_window, GLFW_KEY_X) == GLFW_PRESS) {
-			std::cout << "Enter new degree position to point to:" << std::endl;
-			auto input = std::string();
-			std::cin >> input;
-			try
-			{
-				auto parsed = std::stof(input);
-				m_camera.PointTo(parsed);
-			}
-			catch (const std::exception&)
-			{
-			}
+			m_camera.MoveRelative(glm::vec3(0.f, 0.f, -1));
 		}
 		if (glfwGetKey(m_window, GLFW_KEY_Q) == GLFW_PRESS) {
-			m_camera.TurnY(-0.1);
+			m_camera.Turn(0,-0.1);
 		}
 		if (glfwGetKey(m_window, GLFW_KEY_E) == GLFW_PRESS) {
-			m_camera.TurnY(0.1);
+			m_camera.Turn(0,0.1);
 		}
-		m_camera.Turn(mouse_diff_x, mouse_diff_y);
+		m_camera.Turn(mouse_diff_y, mouse_diff_x);
 		m_shaderprogramm.SetViewMatrix(m_camera.GetViewMatrix());
 		for (auto& entity : m_entities)
 		{
