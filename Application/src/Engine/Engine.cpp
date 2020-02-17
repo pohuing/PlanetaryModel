@@ -1,6 +1,6 @@
 #include "Engine.h"
-#define SCR_WIDTH 1920
-#define SCR_HEIGHT 1000
+#define SCR_WIDTH 800
+#define SCR_HEIGHT 800
 
 void message_callback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
 	fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
@@ -73,13 +73,14 @@ int Engine::Setup()
 void Engine::Mainloop()
 {
 	double mouse_x = 0, mouse_y = 0, old_mouse_x = 0, old_mouse_y = 0, mouse_diff_x = 0, mouse_diff_y = 0;
-
+	float old_time = 0, delta_time = 0;
 	m_shaderprogramm.SetViewMatrix(glm::lookAt(glm::vec3(2, 0, 0), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
 
 	glm::mat4 projection = glm::perspective(glm::radians(90.f), (float)SCR_WIDTH/SCR_HEIGHT, 0.1f, 100.f);
 	m_shaderprogramm.SetProjectionMatrix(projection);
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
+
 	while (!glfwWindowShouldClose(m_window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -88,23 +89,26 @@ void Engine::Mainloop()
 		mouse_diff_y = mouse_y - old_mouse_y;
 		old_mouse_x = mouse_x;
 		old_mouse_y = mouse_y;
+		float current_time = glfwGetTime();
+		delta_time = current_time - old_time;
+		old_time = current_time;
 
 		if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
 		{
-			m_camera.MoveRelative(glm::vec3(1, 0.f, 0.f));
+			m_camera.MoveRelative(RIGHT,delta_time);
 		}
 		if (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
 		{
-			m_camera.MoveRelative(glm::vec3(-1, 0.f, 0.f));
+			m_camera.MoveRelative(LEFT,delta_time);
 			//x -= 0.1f;
 		}
 		if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
 		{
-			m_camera.MoveRelative(glm::vec3(0.0f, 0.f, 1));
+			m_camera.MoveRelative(FORWARD, delta_time);
 		}
 		if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS)
 		{
-			m_camera.MoveRelative(glm::vec3(0.f, 0.f, -1));
+			m_camera.MoveRelative(BACKWARD, delta_time);
 		}
 		if (glfwGetKey(m_window, GLFW_KEY_Q) == GLFW_PRESS) {
 			m_camera.Turn(0,-0.1);
