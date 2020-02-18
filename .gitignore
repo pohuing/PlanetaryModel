@@ -1,5 +1,4 @@
 ## Custom Excludes
-premake5.exe
 Planeten.sln
 Application.vcxproj.filters
 
