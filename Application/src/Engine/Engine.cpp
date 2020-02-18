@@ -30,7 +30,7 @@ Engine::Engine()
 	m_entities = std::vector<std::unique_ptr<IBody>>();
 	std::swap(m_shaderprogramm, Shaderprogramm(vbuffer.str(), fbuffer.str()));
 	m_shaderprogramm.Bind();
-
+	m_camera = Camera(glm::vec3(0, 0, 20));
 }
 
 void Engine::AddEntity(std::unique_ptr<IBody> entity)
@@ -93,30 +93,44 @@ void Engine::Mainloop()
 		delta_time = current_time - old_time;
 		old_time = current_time;
 
+		auto old_trans = m_entities[1].get()->GetTransform();
+		m_entities[1].get()->Place(old_trans + glm::vec3(sin(current_time), 0, 0));
+		old_trans = m_entities[0].get()->GetTransform();
+		m_entities[0].get()->Place(old_trans + glm::vec3(0, sin(current_time), 0));
+
 		if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
 		{
-			m_camera.MoveRelative(RIGHT,delta_time);
+			m_camera.ProcessKeyboard(RIGHT,delta_time);
 		}
 		if (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
 		{
-			m_camera.MoveRelative(LEFT,delta_time);
+			m_camera.ProcessKeyboard(LEFT,delta_time);
 			//x -= 0.1f;
 		}
 		if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
 		{
-			m_camera.MoveRelative(FORWARD, delta_time);
+			m_camera.ProcessKeyboard(FORWARD, delta_time);
 		}
 		if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS)
 		{
-			m_camera.MoveRelative(BACKWARD, delta_time);
+			m_camera.ProcessKeyboard(BACKWARD, delta_time);
+		}
+		if(glfwGetKey(m_window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+			m_camera.ProcessKeyboard(UP, delta_time);
+		}		
+		if(glfwGetKey(m_window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+			m_camera.ProcessKeyboard(DOWN, delta_time);
 		}
 		if (glfwGetKey(m_window, GLFW_KEY_Q) == GLFW_PRESS) {
-			m_camera.Turn(0,-0.1);
+			m_camera.ProcessMouseMovement(0,-0.1);
 		}
 		if (glfwGetKey(m_window, GLFW_KEY_E) == GLFW_PRESS) {
-			m_camera.Turn(0,0.1);
+			m_camera.ProcessMouseMovement(0,0.1);
 		}
-		m_camera.Turn(mouse_diff_y, mouse_diff_x);
+		m_camera.ProcessMouseMovement(mouse_diff_x, mouse_diff_y);
+
+
+
 		m_shaderprogramm.SetViewMatrix(m_camera.GetViewMatrix());
 		for (auto& entity : m_entities)
 		{
@@ -130,3 +144,4 @@ void Engine::Mainloop()
 
 	glfwTerminate();
 }
+

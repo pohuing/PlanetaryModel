@@ -11,6 +11,7 @@
 #include "../Entities/IBody.h"
 #include "../Rendering/ShaderProgramm.h"
 #include "../Entities/Camera.h"
+#include "../Entities/Transform.h"
 
 class Engine
 {
