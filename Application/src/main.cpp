@@ -74,36 +74,31 @@ int main() {
 		// bottom
 		20, 21, 22,
 		22, 23, 20
-
 	};
 
 	Transform transforms[] = {
-		{glm::vec3(1,0,0)},
 		{glm::vec3(2,0,0)},
-		{glm::vec3(3,0,0)},
 		{glm::vec3(4,0,0)},
-		{glm::vec3(5,0,0)},
-		{glm::vec3(7,0,0)},
-		{glm::vec3(0,1,0)},
+		{glm::vec3(6,0,0)},
+		{glm::vec3(8,0,0)},
+		{glm::vec3(10,0,0)},
+		{glm::vec3(12,0,0)},
 		{glm::vec3(0,2,0)},
-		{glm::vec3(0,3,0)},
 		{glm::vec3(0,4,0)},
-		{glm::vec3(0,5,0)},
+		{glm::vec3(0,6,0)},
+		{glm::vec3(0,8,0)},
+		{glm::vec3(0,10,0)},
 		{glm::vec3(0,0,0)},
 		{glm::vec3(0,0,2.5)},
 		{glm::vec3(0,0,5)},
 	};
 
-
 	Engine engine;
 	auto planet = std::make_unique<Planet>();
 	engine.AddEntity(std::move(planet));
-	planet = std::make_unique<Planet>();
-	engine.AddEntity(std::move(planet));
-	for(auto& tf : transforms) {
-		planet = std::make_unique<Planet>(tf);
-		engine.AddEntity(std::move(planet));
-	}
+	//for(auto& tf : transforms) {
+	//	planet = std::make_unique<Planet>(tf);
+	//	engine.AddEntity(std::move(planet));
+	//}
 	engine.Mainloop();
 }
-

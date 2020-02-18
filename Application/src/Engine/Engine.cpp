@@ -89,10 +89,10 @@ void Engine::Mainloop() {
 		delta_time = current_time - old_time;
 		old_time = current_time;
 
-		auto old_trans = m_entities[1].get()->GetTransform();
-		m_entities[1].get()->Place(old_trans + glm::vec3(sin(current_time), 0, 0));
-		old_trans = m_entities[0].get()->GetTransform();
-		m_entities[0].get()->Place(old_trans + glm::vec3(0, sin(current_time), 0));
+		//auto old_trans = m_entities[1].get()->GetTransform();
+		//m_entities[1].get()->Place(old_trans + glm::vec3(sin(current_time), 0, 0));
+		//old_trans = m_entities[0].get()->GetTransform();
+		//m_entities[0].get()->Place(old_trans + glm::vec3(0, sin(current_time), 0));
 
 		if(glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS) {
 			m_camera.ProcessKeyboard(RIGHT, delta_time);
