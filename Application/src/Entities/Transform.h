@@ -7,6 +7,7 @@ class Transform {
 public:
 	Transform();
 	Transform(glm::vec3 translation);
+	Transform(glm::vec3 translation, glm::vec3 scale);
 
 	glm::vec3 GetTranslation() const;
 	glm::vec3 GetRotation() const;

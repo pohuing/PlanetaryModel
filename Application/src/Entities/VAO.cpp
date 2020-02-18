@@ -1,30 +1,25 @@
 #include "VAO.h"
 
-VertexArrayObject::VertexArrayObject()
-{
+VertexArrayObject::VertexArrayObject() {
 	glGenVertexArrays(1, &m_VAO);
 }
 
-VertexArrayObject::~VertexArrayObject()
-{
+VertexArrayObject::~VertexArrayObject() {
 	glDeleteVertexArrays(1, &m_VAO);
 }
 
-void VertexArrayObject::Bind()
-{
+void VertexArrayObject::Bind() {
 	glBindVertexArray(m_VAO);
 }
 
-void VertexArrayObject::Unbind()
-{
+void VertexArrayObject::Unbind() {
 	glBindVertexArray(0);
 }
 
-void VertexArrayObject::SetupAttribPointers()
-{
+void VertexArrayObject::SetupAttribPointers() {
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, m_Position));
-	
+
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, sizeof(Vertex), (const void*)offsetof(Vertex, m_Normal));
 }

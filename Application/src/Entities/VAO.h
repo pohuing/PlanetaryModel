@@ -2,7 +2,6 @@
 #include <GLEW/glew.h>
 #include "Vertex.h"
 
-
 class VertexArrayObject {
 public:
 	VertexArrayObject();
@@ -11,5 +10,6 @@ public:
 	void Unbind();
 	void SetupAttribPointers();
 private:
+	//VertexArrayObject(const VertexArrayObject& other);
 	GLuint m_VAO;
 };

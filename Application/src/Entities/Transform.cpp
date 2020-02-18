@@ -1,21 +1,23 @@
 #include "Transform.h"
 
-Transform::Transform()
-{
+Transform::Transform() {
 	m_translation = glm::vec3{ 0.f, 0.f, 0.f };
 	m_rotation = glm::vec3{ 0.f, 0.f, 0.f };
 	m_scale = glm::vec3{ 1.0f, 1.0f, 1.0f };
 }
 
-Transform::Transform(glm::vec3 translation) 
-	:m_translation(translation) 
-{
+Transform::Transform(glm::vec3 translation)
+	:m_translation(translation) {
 	m_rotation = glm::vec3(0);
 	m_scale = glm::vec3(1);
-};
+}
+Transform::Transform(glm::vec3 translation, glm::vec3 scale)
+	: m_translation(translation), m_scale(scale) {
+	m_rotation = glm::vec3(0);
+}
+;
 
-glm::mat4 Transform::GetModelMatrix() const
-{
+glm::mat4 Transform::GetModelMatrix() const {
 	glm::mat4 translation = glm::translate(glm::mat4(1.f), m_translation);
 
 	glm::vec3 rot = m_rotation;
@@ -30,43 +32,37 @@ glm::mat4 Transform::GetModelMatrix() const
 	return translation * finalRot * scale;
 }
 
-glm::vec3 Transform::GetTranslation() const
-{
+glm::vec3 Transform::GetTranslation() const {
 	return m_translation;
 }
 
-glm::vec3 Transform::GetRotation()const
-{
+glm::vec3 Transform::GetRotation()const {
 	return m_rotation;
 }
 
-glm::vec3 Transform::GetScale()const
-{
+glm::vec3 Transform::GetScale()const {
 	return m_scale;
 }
 
-void Transform::SetTranslation(float x, float y, float z)
-{
+void Transform::SetTranslation(float x, float y, float z) {
 	m_translation.x = x;
 	m_translation.y = y;
 	m_translation.z = z;
 }
 
-void Transform::SetRotation(float pitch, float yaw, float roll)
-{
+void Transform::SetRotation(float pitch, float yaw, float roll) {
 	m_rotation.x = pitch;
 	m_rotation.y = yaw;
 	m_rotation.z = roll;
 }
 
-void Transform::SetScale(float x, float y, float z)
-{
+void Transform::SetScale(float x, float y, float z) {
 	m_scale.x = x;
 	m_scale.y = y;
 	m_scale.z = z;
 }
 
-Transform Transform::operator+(const glm::vec3& offset) {	
+Transform Transform::operator+(const glm::vec3& offset) {
 	return Transform(m_translation + offset);
 }
 

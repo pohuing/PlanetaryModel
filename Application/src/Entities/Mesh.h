@@ -9,7 +9,11 @@
 class Mesh {
 public:
 	Mesh();
+	Mesh(const Mesh& other) = delete;
+	Mesh(Mesh&& other) = default;
 	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
+	void Load();
+	void Unload();
 	void Draw();
 
 	std::vector<Vertex> m_vertices;
@@ -21,6 +25,5 @@ private:
 	VertexArrayObject m_VAO;
 	VertexBufferObject m_VBO;
 	IndexBufferObject m_IBO;
+	bool m_loaded;
 };
-
-

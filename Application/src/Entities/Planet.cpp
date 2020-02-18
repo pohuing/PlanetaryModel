@@ -144,8 +144,8 @@ Planet::Planet(Transform transform)
 	std::swap(m_mesh, Mesh(vertices, indices));
 }
 
-Planet::Planet(Transform transform, Mesh mesh)
-	:m_Transform(transform), m_mesh(mesh) {}
+Planet::Planet(Transform transform, Mesh&& mesh)
+	:m_Transform(transform), m_mesh(std::move(mesh)) {}
 
 void Planet::Draw(const Shaderprogramm& shaderprogramm) {
 	shaderprogramm.Bind();

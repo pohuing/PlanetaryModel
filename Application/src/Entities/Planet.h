@@ -10,15 +10,12 @@ class Planet : public IBody {
 public:
 	Planet();
 	Planet(Transform transform);
-
-	Planet(Transform transform, Mesh mesh);
-
+	Planet(Transform transform, Mesh&& mesh);
 	~Planet() {};
+
 	void Draw(const Shaderprogramm& shaderprogramm);
 	void Update() {};
-
 	void Place(Transform newPosition);
-
 	Transform GetTransform();
 
 private:
