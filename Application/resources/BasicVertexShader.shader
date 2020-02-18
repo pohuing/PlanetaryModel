@@ -3,7 +3,8 @@
 layout(location = 0) in vec3 position;
 layout(location = 1) in vec3 normal;
 
-out vec4 FragColor;
+out vec3 FragPos;
+out vec3 Normal;
 
 uniform mat4 ModelMatrix;
 uniform mat4 ProjectionMatrix;
@@ -11,6 +12,8 @@ uniform mat4 ViewMatrix;
 
 void main()
 {
-	gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * vec4(position, 1.0f);
-	FragColor = vec4(1,1,1,0);
+	FragPos = vec3(ModelMatrix * vec4(position, 1.0));
+	Normal = mat3(transpose(inverse(ModelMatrix))) * normal;
+
+	gl_Position = ProjectionMatrix * ViewMatrix  * vec4(FragPos, 1.0);
 }

@@ -9,15 +9,13 @@ void message_callback(GLenum source, GLenum type, GLuint id, GLenum severity, GL
 	printf("\n");
 }
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-	// make sure the viewport matches the new window dimensions; note that width and 
+void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+	// make sure the viewport matches the new window dimensions; note that width and
 	// height will be significantly larger than specified on retina displays.
 	glViewport(0, 0, width, height);
 }
 
-Engine::Engine()
-{
+Engine::Engine() {
 	std::ifstream vstream("resources/BasicVertexShader.shader");
 	std::stringstream vbuffer;
 	vbuffer << vstream.rdbuf();
@@ -26,20 +24,18 @@ Engine::Engine()
 	std::stringstream fbuffer;
 	fbuffer << fstream.rdbuf();
 
-	Setup();
+	GlSetup();
 	m_entities = std::vector<std::unique_ptr<IBody>>();
 	std::swap(m_shaderprogramm, Shaderprogramm(vbuffer.str(), fbuffer.str()));
 	m_shaderprogramm.Bind();
 	m_camera = Camera(glm::vec3(0, 0, 20));
 }
 
-void Engine::AddEntity(std::unique_ptr<IBody> entity)
-{
+void Engine::AddEntity(std::unique_ptr<IBody> entity) {
 	m_entities.push_back(std::move(entity));
 }
 
-int Engine::Setup()
-{
+int Engine::GlSetup() {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
@@ -47,8 +43,7 @@ int Engine::Setup()
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 
 	m_window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
-	if (m_window == NULL)
-	{
+	if(m_window == NULL) {
 		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
 		return -1;
@@ -57,8 +52,7 @@ int Engine::Setup()
 	glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);
 
 	GLenum err = glewInit();
-	if (GLEW_OK != err)
-	{
+	if(GLEW_OK != err) {
 		std::cout << "Failed to initialize GLEW, ERROR: " << glewGetErrorString(err) << std::endl;
 		return -1;
 	}
@@ -70,19 +64,21 @@ int Engine::Setup()
 	return 0;
 }
 
-void Engine::Mainloop()
-{
+void Engine::Mainloop() {
 	double mouse_x = 0, mouse_y = 0, old_mouse_x = 0, old_mouse_y = 0, mouse_diff_x = 0, mouse_diff_y = 0;
 	float old_time = 0, delta_time = 0;
 	m_shaderprogramm.SetViewMatrix(glm::lookAt(glm::vec3(2, 0, 0), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
 
-	glm::mat4 projection = glm::perspective(glm::radians(90.f), (float)SCR_WIDTH/SCR_HEIGHT, 0.1f, 100.f);
+	glm::mat4 projection = glm::perspective(glm::radians(90.f), (float)SCR_WIDTH / SCR_HEIGHT, 0.1f, 100.f);
 	m_shaderprogramm.SetProjectionMatrix(projection);
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 
-	while (!glfwWindowShouldClose(m_window))
-	{
+	m_shaderprogramm.SetLightColor(glm::vec3(0, 1, 0));
+	m_shaderprogramm.SetLightPosition(glm::vec3(10, 10, 10));
+	m_shaderprogramm.SetObjectColor(glm::vec3(1, 1, 1));
+
+	while(!glfwWindowShouldClose(m_window)) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glfwGetCursorPos(m_window, &mouse_x, &mouse_y);
 		mouse_diff_x = mouse_x - old_mouse_x;
@@ -98,42 +94,35 @@ void Engine::Mainloop()
 		old_trans = m_entities[0].get()->GetTransform();
 		m_entities[0].get()->Place(old_trans + glm::vec3(0, sin(current_time), 0));
 
-		if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
-		{
-			m_camera.ProcessKeyboard(RIGHT,delta_time);
+		if(glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS) {
+			m_camera.ProcessKeyboard(RIGHT, delta_time);
 		}
-		if (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
-		{
-			m_camera.ProcessKeyboard(LEFT,delta_time);
+		if(glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS) {
+			m_camera.ProcessKeyboard(LEFT, delta_time);
 			//x -= 0.1f;
 		}
-		if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
-		{
+		if(glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS) {
 			m_camera.ProcessKeyboard(FORWARD, delta_time);
 		}
-		if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS)
-		{
+		if(glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS) {
 			m_camera.ProcessKeyboard(BACKWARD, delta_time);
 		}
 		if(glfwGetKey(m_window, GLFW_KEY_SPACE) == GLFW_PRESS) {
 			m_camera.ProcessKeyboard(UP, delta_time);
-		}		
+		}
 		if(glfwGetKey(m_window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
 			m_camera.ProcessKeyboard(DOWN, delta_time);
 		}
-		if (glfwGetKey(m_window, GLFW_KEY_Q) == GLFW_PRESS) {
-			m_camera.ProcessMouseMovement(0,-0.1);
+		if(glfwGetKey(m_window, GLFW_KEY_Q) == GLFW_PRESS) {
+			m_camera.ProcessMouseMovement(0, -0.1);
 		}
-		if (glfwGetKey(m_window, GLFW_KEY_E) == GLFW_PRESS) {
-			m_camera.ProcessMouseMovement(0,0.1);
+		if(glfwGetKey(m_window, GLFW_KEY_E) == GLFW_PRESS) {
+			m_camera.ProcessMouseMovement(0, 0.1);
 		}
 		m_camera.ProcessMouseMovement(mouse_diff_x, mouse_diff_y);
-
-
-
+		m_shaderprogramm.SetViewPosition(m_camera.Position);
 		m_shaderprogramm.SetViewMatrix(m_camera.GetViewMatrix());
-		for (auto& entity : m_entities)
-		{
+		for(auto& entity : m_entities) {
 			entity.get()->Update();
 			entity.get()->Draw(m_shaderprogramm);
 		}
@@ -144,4 +133,3 @@ void Engine::Mainloop()
 
 	glfwTerminate();
 }
-

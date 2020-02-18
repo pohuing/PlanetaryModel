@@ -13,15 +13,13 @@
 #include "../Entities/Camera.h"
 #include "../Entities/Transform.h"
 
-class Engine
-{
+class Engine {
 public:
 	Engine();
 	//~Engine();
 	void AddEntity(std::unique_ptr<IBody> entity);
-	int Setup();
+	int GlSetup();
 	void Mainloop();
-
 
 private:
 	std::vector<std::unique_ptr<IBody>> m_entities;
@@ -29,4 +27,3 @@ private:
 	GLFWwindow* m_window;
 	Camera m_camera;
 };
-
