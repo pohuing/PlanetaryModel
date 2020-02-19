@@ -1,13 +1,10 @@
-#include <GLEW/glew.h>
-#include <GLFW/glfw3.h>
 #include <GLM/glm.hpp>
-
+#include <memory>
 #include <utility>
+
 #include "Entities/Planet.h"
 #include "Engine/Engine.h"
-#include "Entities/Mesh.h"
 #include "Entities/Transform.h"
-#include <memory>
 
 int main() {
 	Transform transforms[] = {

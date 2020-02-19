@@ -27,12 +27,12 @@ void VertexBufferObject::BufferData(GLenum target, GLsizeiptr size, const GLvoid
 }
 
 
-VertexBufferObject::VertexBufferObject(VertexBufferObject&& other)
+VertexBufferObject::VertexBufferObject(VertexBufferObject&& other)noexcept
 {
 	std::swap(m_VBO, other.m_VBO);
 }
 
-VertexBufferObject& VertexBufferObject::operator= ( VertexBufferObject&& other )
+VertexBufferObject& VertexBufferObject::operator= ( VertexBufferObject&& other ) noexcept
 {
     std::swap ( m_VBO, other.m_VBO );
     return *this;

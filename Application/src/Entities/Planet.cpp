@@ -81,13 +81,13 @@ Planet::Planet(Transform transform)
 Planet::Planet(Transform transform, Mesh&& mesh)
 	: m_mesh(std::move(mesh)), m_Transform(transform) {}
 
-void Planet::Draw(const Shaderprogramm& shaderprogramm) {
+void Planet::Draw(const Shaderprogram& shaderprogramm) {
 	shaderprogramm.Bind();
 	shaderprogramm.SetModelMatrix(m_Transform.GetModelMatrix());
 	m_mesh.Draw();
 }
 
-void Planet::Place(Transform newPosition) {
+void Planet::Place(const Transform newPosition) {
 	m_Transform = newPosition;
 }
 

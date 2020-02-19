@@ -2,7 +2,6 @@
 
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices) :
 	m_vertices(std::move(vertices)), m_indices(std::move(indices)) {
-	m_loaded = false;
 	Load();
 }
 
@@ -32,11 +31,9 @@ void Mesh::Unload() {
 	m_loaded = false;
 }
 
-Mesh::Mesh() {}
-
 void Mesh::Draw() {
 	Bind();
-	glDrawElements(GL_TRIANGLES, m_IBO.GetIndicesCount(), GL_UNSIGNED_INT, (GLvoid*)0);
+	glDrawElements(GL_TRIANGLES, m_IBO.GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
 	Unbind();
 }
 

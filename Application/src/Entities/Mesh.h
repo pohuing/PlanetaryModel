@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include <GLM/glm.hpp>
 #include "VAO.h"
 #include "VBO.h"
 #include "IBO.h"
@@ -8,11 +7,13 @@
 
 class Mesh {
 public:
-	Mesh();
+	Mesh() = default;
 	Mesh(const Mesh& other) = delete;
 	Mesh(Mesh&& other) = default;
 	Mesh& operator=(Mesh&& other) = default;
+	Mesh& operator=(const Mesh& other) = delete;
 	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
+	~Mesh() = default;
 	void Load();
 	void Unload();
 	void Draw();
@@ -26,5 +27,5 @@ private:
 	VertexArrayObject m_VAO;
 	VertexBufferObject m_VBO;
 	IndexBufferObject m_IBO;
-	bool m_loaded;
+	bool m_loaded = false;
 };

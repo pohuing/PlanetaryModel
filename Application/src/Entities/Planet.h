@@ -1,22 +1,21 @@
 #pragma once
 #include "IBody.h"
-#include "../Rendering/ShaderProgramm.h"
+#include "../Rendering/Shaderprogram.h"
 #include "Transform.h"
 #include "Mesh.h"
-#include <vector>
-#include <utility>
+
 
 class Planet : public IBody {
 public:
 	Planet();
 	Planet(Transform transform);
 	Planet(Transform transform, Mesh&& mesh);
-	~Planet() {};
+	~Planet() = default;
 
-	void Draw(const Shaderprogramm& shaderprogramm);
-	void Update() {};
-	void Place(Transform newPosition);
-	Transform GetTransform();
+	void Draw(const Shaderprogram& shaderprogramm) override;
+	void Update() override {};
+	void Place(Transform newPosition) override;
+	Transform GetTransform() override;
 
 private:
 	Mesh m_mesh;

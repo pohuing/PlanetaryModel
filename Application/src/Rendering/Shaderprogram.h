@@ -4,12 +4,12 @@
 #include <iostream>
 #include <GLM/glm.hpp>
 
-class Shaderprogramm {
+class Shaderprogram {
 public:
-	Shaderprogramm();
-	Shaderprogramm(const std::string& vertexSource, const std::string& fragmentShader);
-	Shaderprogramm(Shaderprogramm const&) = delete;
-	Shaderprogramm& operator=(Shaderprogramm&& other);
+	Shaderprogram();
+	Shaderprogram(const std::string& vertexShaderSource, const std::string& fragmentShaderSource);
+	Shaderprogram(Shaderprogram const&) = delete;
+	Shaderprogram& operator=(Shaderprogram&& other) noexcept;
 	void Bind() const;
 	void UnBind() const;
 	void SetModelMatrix(glm::mat4 modelMatrix) const;

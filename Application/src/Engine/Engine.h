@@ -1,18 +1,13 @@
 #pragma once
 #include <vector>
-#include <utility>
-#include <sstream>
-#include <fstream>
 #include <memory>
 #include <GLEW/glew.h>
 #include <GLFW/glfw3.h>
-#include <GLM/glm.hpp>
-#include <GLM/ext.hpp>
+#include <fstream>
 
 #include "../Entities/IBody.h"
-#include "../Rendering/ShaderProgramm.h"
+#include "../Rendering/Shaderprogram.h"
 #include "../Entities/Camera.h"
-#include "../Entities/Transform.h"
 
 class Engine {
 public:
@@ -24,7 +19,7 @@ public:
 
 private:
 	std::vector<std::unique_ptr<IBody>> m_entities;
-	Shaderprogramm m_shaderprogramm;
-	GLFWwindow* m_window;
+	Shaderprogram m_shaderprogramm;
+	GLFWwindow* m_window = nullptr;
 	Camera m_camera;
 };

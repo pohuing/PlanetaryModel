@@ -1,6 +1,6 @@
 #include "Engine.h"
-#define SCR_WIDTH 800
-#define SCR_HEIGHT 800
+constexpr int SCR_WIDTH = 800;
+constexpr int SCR_HEIGHT = 800;
 
 void message_callback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
 	fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
@@ -30,7 +30,7 @@ std::string readFile(const char* const &path)
 
 Engine::Engine() : m_camera(glm::vec3(0, 0, 0)) {
 	GlSetup();
-	m_shaderprogramm = Shaderprogramm(readFile("resources/BasicVertexShader.shader"), readFile("resources/BasicFragmentShader.shader"));
+	m_shaderprogramm = Shaderprogram(readFile("resources/BasicVertexShader.shader"), readFile("resources/BasicFragmentShader.shader"));
 	m_shaderprogramm.Bind();
 }
 
@@ -46,8 +46,8 @@ int Engine::GlSetup() {
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 
-	m_window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
-	if(m_window == NULL) {
+	m_window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", nullptr, nullptr);
+	if(m_window == nullptr) {
 		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
 		return -1;
@@ -94,12 +94,9 @@ void Engine::Mainloop() {
 		delta_time = current_time - old_time;
 		old_time = current_time;
 
-		auto old_trans = m_entities[1].get()->GetTransform();
-		m_entities[1].get()->Place(glm::vec3(sin(current_time) * 2, 0, 2));
-		old_trans = m_entities[0].get()->GetTransform();
-		m_entities[0].get()->Place(glm::vec3(0, sin(current_time) * 2, 4));
-
-		m_entities[2].get()->Place(glm::vec3(sin(current_time) * 3 + 10, 10, cos(current_time) * 3 + 10));
+		m_entities[1]->Place(glm::vec3(sin(current_time) * 2, 0, 2));
+		m_entities[0]->Place(glm::vec3(0, sin(current_time) * 2, 4));
+		m_entities[2]->Place(glm::vec3(sin(current_time) * 3 + 10, 10, cos(current_time) * 3 + 10));
 
 		if(glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS) {
 			m_camera.ProcessKeyboard(RIGHT, delta_time);
@@ -129,8 +126,8 @@ void Engine::Mainloop() {
 		m_shaderprogramm.SetViewPosition(m_camera.Position);
 		m_shaderprogramm.SetViewMatrix(m_camera.GetViewMatrix());
 		for(auto& entity : m_entities) {
-			entity.get()->Update();
-			entity.get()->Draw(m_shaderprogramm);
+			entity->Update();
+			entity->Draw(m_shaderprogramm);
 		}
 
 		glfwSwapBuffers(m_window);
