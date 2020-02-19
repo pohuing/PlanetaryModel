@@ -1,4 +1,5 @@
 #include "VBO.h"
+#include <utility>
 
 VertexBufferObject::VertexBufferObject()
 {
@@ -23,5 +24,17 @@ void VertexBufferObject::Unbind()
 void VertexBufferObject::BufferData(GLenum target, GLsizeiptr size, const GLvoid* data, GLenum usage)
 {
 	glBufferData(target, size, data, usage);
+}
+
+
+VertexBufferObject::VertexBufferObject(VertexBufferObject&& other)
+{
+	std::swap(m_VBO, other.m_VBO);
+}
+
+VertexBufferObject& VertexBufferObject::operator= ( VertexBufferObject&& other )
+{
+    std::swap ( m_VBO, other.m_VBO );
+    return *this;
 }
 

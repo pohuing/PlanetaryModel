@@ -3,6 +3,7 @@
 #include <utility>
 #include <sstream>
 #include <fstream>
+#include <memory>
 #include <GLEW/glew.h>
 #include <GLFW/glfw3.h>
 #include <GLM/glm.hpp>

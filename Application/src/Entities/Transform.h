@@ -18,7 +18,7 @@ public:
 	void SetRotation(float pitch, float yaw, float roll);
 	void SetScale(float x, float y, float z);
 
-	Transform operator+(const glm::vec3& offset);
+	Transform operator+(const glm::vec3& offset) const;
 	void operator+=(const glm::vec3& offset);
 	void operator+=(const Transform& other);
 

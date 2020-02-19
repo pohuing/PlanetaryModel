@@ -1,4 +1,5 @@
 #include "IBO.h"
+#include <utility>
 
 IndexBufferObject::IndexBufferObject() {
 	m_VerticesCount = 0;
@@ -24,4 +25,13 @@ void IndexBufferObject::BufferData(GLenum target, GLsizei size, const GLvoid* da
 
 GLsizei IndexBufferObject::GetIndicesCount() {
 	return m_VerticesCount;
+}
+
+IndexBufferObject::IndexBufferObject ( IndexBufferObject&& other ) {
+	std::swap ( m_IBO, other.m_IBO );
+}
+
+IndexBufferObject& IndexBufferObject::operator= ( IndexBufferObject&& other ) {
+	std::swap ( m_IBO, other.m_IBO );
+	return *this;
 }

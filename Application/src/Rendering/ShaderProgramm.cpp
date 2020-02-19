@@ -81,12 +81,17 @@ void Shaderprogramm::SetObjectColor(glm::vec3 color) const {
 	SetUniform3f("objectColor", color);
 }
 
-void Shaderprogramm::SetUniformMatrix4f(char* identifier, glm::mat4 value) const {
+void Shaderprogramm::SetUniformMatrix4f(const char* identifier, glm::mat4 value) const {
 	GLuint location = glGetUniformLocation(m_ID, identifier);
 	glUniformMatrix4fv(location, 1, GL_FALSE, &value[0][0]);
 }
 
-void Shaderprogramm::SetUniform3f(char* identifier, glm::vec3 value) const {
+void Shaderprogramm::SetUniform3f(const char* identifier, glm::vec3 value) const {
 	GLuint location = glGetUniformLocation(m_ID, identifier);
 	glUniform3fv(location, 1, &value[0]);
+}
+
+Shaderprogramm& Shaderprogramm::operator= ( Shaderprogramm&& other ) {
+	std::swap ( m_ID, other.m_ID );
+	return *this;
 }

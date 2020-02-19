@@ -6,6 +6,9 @@ class VertexArrayObject {
 public:
 	VertexArrayObject();
 	~VertexArrayObject();
+	VertexArrayObject(const VertexArrayObject&) = delete;
+	VertexArrayObject(VertexArrayObject &&other);
+	VertexArrayObject& operator=(VertexArrayObject&& other);
 	void Bind();
 	void Unbind();
 	void SetupAttribPointers();

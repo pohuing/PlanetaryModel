@@ -15,20 +15,23 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
 }
 
-Engine::Engine() {
-	std::ifstream vstream("resources/BasicVertexShader.shader");
-	std::stringstream vbuffer;
-	vbuffer << vstream.rdbuf();
+std::string readFile(const char* const &path)
+{
+	std::ifstream ifs(path, std::ios::in | std::ios::ate | std::ios::binary);
+	if(!ifs.is_open())
+	{
+		throw std::runtime_error("Could not open" + std::string(path));
+	}
+	std::string data(ifs.tellg(), 0);
+	ifs.seekg(0);
+	ifs.read(&data[0], data.size());
+	return data;
+}
 
-	std::ifstream fstream("resources/BasicFragmentShader.shader");
-	std::stringstream fbuffer;
-	fbuffer << fstream.rdbuf();
-
+Engine::Engine() : m_camera(glm::vec3(0, 0, 0)) {
 	GlSetup();
-	m_entities = std::vector<std::unique_ptr<IBody>>();
-	std::swap(m_shaderprogramm, Shaderprogramm(vbuffer.str(), fbuffer.str()));
+	m_shaderprogramm = Shaderprogramm(readFile("resources/BasicVertexShader.shader"), readFile("resources/BasicFragmentShader.shader"));
 	m_shaderprogramm.Bind();
-	m_camera = Camera(glm::vec3(0, 0, 0));
 }
 
 void Engine::AddEntity(std::unique_ptr<IBody> entity) {
@@ -40,6 +43,7 @@ int Engine::GlSetup() {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 
 	m_window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
@@ -58,6 +62,7 @@ int Engine::GlSetup() {
 	}
 
 	glEnable(GL_DEBUG_OUTPUT);
+	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 	glDebugMessageCallback(message_callback, 0);
 
 	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);

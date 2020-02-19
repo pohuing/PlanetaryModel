@@ -1,7 +1,7 @@
 #include "Mesh.h"
 
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices) :
-	m_vertices(vertices), m_indices(indices) {
+	m_vertices(std::move(vertices)), m_indices(std::move(indices)) {
 	m_loaded = false;
 	Load();
 }

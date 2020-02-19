@@ -62,8 +62,8 @@ void Transform::SetScale(float x, float y, float z) {
 	m_scale.z = z;
 }
 
-Transform Transform::operator+(const glm::vec3& offset) {
-	return Transform(m_translation + offset);
+Transform Transform::operator+(const glm::vec3& offset) const {
+	return { m_translation + offset };
 }
 
 void Transform::operator+=(const glm::vec3& offset) {

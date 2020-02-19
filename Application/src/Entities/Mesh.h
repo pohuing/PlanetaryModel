@@ -11,6 +11,7 @@ public:
 	Mesh();
 	Mesh(const Mesh& other) = delete;
 	Mesh(Mesh&& other) = default;
+	Mesh& operator=(Mesh&& other) = default;
 	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
 	void Load();
 	void Unload();
