@@ -9,6 +9,7 @@ public:
 	VertexArrayObject(const VertexArrayObject&) = delete;
 	VertexArrayObject(VertexArrayObject &&other) noexcept;
 	VertexArrayObject& operator=(VertexArrayObject&& other) noexcept;
+	VertexArrayObject& operator=(const VertexArrayObject& other) = delete;
 	void Bind();
 	void Unbind();
 	void SetupAttribPointers();

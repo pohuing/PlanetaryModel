@@ -46,7 +46,7 @@ int Engine::GlSetup() {
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 
-	m_window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", nullptr, nullptr);
+	m_window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Planetary Model", nullptr, nullptr);
 	if(m_window == nullptr) {
 		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
@@ -64,7 +64,8 @@ int Engine::GlSetup() {
 	glEnable(GL_DEBUG_OUTPUT);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 	glDebugMessageCallback(message_callback, 0);
-
+	glfwSwapInterval(1);
+	
 	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	return 0;
 }
@@ -90,13 +91,14 @@ void Engine::Mainloop() {
 		mouse_diff_y = mouse_y - old_mouse_y;
 		old_mouse_x = mouse_x;
 		old_mouse_y = mouse_y;
-		float current_time = glfwGetTime();
+		auto current_time = glfwGetTime();
 		delta_time = current_time - old_time;
 		old_time = current_time;
 
 		m_entities[1]->Place(glm::vec3(sin(current_time) * 2, 0, 2));
 		m_entities[0]->Place(glm::vec3(0, sin(current_time) * 2, 4));
-		m_entities[2]->Place(glm::vec3(sin(current_time) * 3 + 10, 10, cos(current_time) * 3 + 10));
+		m_entities[5]->Place(glm::vec3(sin(current_time) * 3 + 10, 10, cos(current_time) * 3 + 10));
+
 
 		if(glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS) {
 			m_camera.ProcessKeyboard(RIGHT, delta_time);
