@@ -125,8 +125,7 @@ inline void Parser::ParseFace(const std::vector<std::string>& face)
 			vertex_normal_index--;
 
 		// TODO: Optimize Vertex generation to prevent duplicate Vertex definitions
-		// BUG: Vertex indices seem to be entirely wrong or incompatible with the shaders, malforming the models massively
 		m_vertices.push_back(Vertex{ m_vertexCoordinates[vertex_index],m_vertexNormals[vertex_normal_index] });
-		m_indices.push_back(m_vertices.size());
+		m_indices.push_back(m_vertices.size() - );
 	}
 }
