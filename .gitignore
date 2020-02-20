@@ -335,3 +335,7 @@ ASALocalRun/
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
 *.vcxproj
+
+# Exemptions
+!Application/resources/sphere.obj
+!Application/resources/cube.obj

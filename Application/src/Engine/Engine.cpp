@@ -43,9 +43,10 @@ int Engine::GlSetup() {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#ifdef DEBUG
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
-
+#endif
 	m_window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Planetary Model", nullptr, nullptr);
 	if(m_window == nullptr) {
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -60,10 +61,12 @@ int Engine::GlSetup() {
 		std::cout << "Failed to initialize GLEW, ERROR: " << glewGetErrorString(err) << std::endl;
 		return -1;
 	}
-
+#ifdef DEBUG
 	glEnable(GL_DEBUG_OUTPUT);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 	glDebugMessageCallback(message_callback, 0);
+	std::cout << "Enabled GL debug output" << std::endl;
+#endif
 	glfwSwapInterval(1);
 	
 	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);

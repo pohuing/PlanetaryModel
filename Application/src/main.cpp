@@ -9,7 +9,7 @@
 #include "Engine/ObjParser.h"
 
 int main() {
-	Parser a("resources/cube.obj");
+	Parser a("resources/sphere.obj");
 	a.ReadFile();
 	
 	Transform transforms[] = {

@@ -52,9 +52,9 @@ void Parser::ParseLine(const std::vector<std::string>& words)
 	else if(words[0] == "vn")
 		ParseVertexNormals(words);
 	else if(words[0] == "vt")
-		std::cout << "Encountered texture coordinate, not supported yet";
+		std::cout << "Encountered texture coordinate, not supported yet" << std::endl;
 	else if(words[0] == "vp")
-		std::cout << "Encountered free form geometry statement, not supported yet";
+		std::cout << "Encountered free form geometry statement, not supported yet" << std::endl;
 	else if(words[0] == "f")
 		ParseFace(words);
 	else {
@@ -98,7 +98,6 @@ void Parser::ParseVertexNormals(const std::vector<std::string>& normals)
 
 inline void Parser::ParseFace(const std::vector<std::string>& face)
 {
-	char buffer[10] = "";
 	for (int i = 1; i < face.size(); i++)
 	{
 		auto word = face[i];
