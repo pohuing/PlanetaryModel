@@ -109,7 +109,11 @@ void Engine::Mainloop() {
 		if (FRAMEBUFER_SIZE_CHANGED)
 		{
 			projection = glm::perspective(glm::radians(90.f), (float)SCR_WIDTH / SCR_HEIGHT, 0.1f, 1000.f);
+			m_shaderprogramm.Bind();
 			m_shaderprogramm.SetProjectionMatrix(projection);
+			m_sun_shader.Bind();
+			m_sun_shader.SetProjectionMatrix(projection);
+			
 			FRAMEBUFER_SIZE_CHANGED = false;
 		}
 		glfwGetCursorPos(m_window, &mouse_x, &mouse_y);
