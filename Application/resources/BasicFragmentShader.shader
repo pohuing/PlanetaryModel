@@ -11,8 +11,8 @@ uniform vec3 lightColor;
 uniform vec3 objectColor;
 
 void main() {
-	// ambient
-	float ambientStrength = 0.1;
+	// ambient gibts nicht im weltall
+	float ambientStrength = 0.0;
 	vec3 ambient = ambientStrength * lightColor;
 
 	// diffuse

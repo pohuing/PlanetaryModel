@@ -20,6 +20,7 @@ public:
 private:
 	std::vector<std::unique_ptr<IBody>> m_entities;
 	Shaderprogram m_shaderprogramm;
+	Shaderprogram m_sun_shader;
 	GLFWwindow* m_window = nullptr;
 	Camera m_camera;
 };

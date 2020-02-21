@@ -1,33 +1,35 @@
 #include <GLM/glm.hpp>
 #include <memory>
 #include <utility>
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 
 #include "Entities/Planet.h"
 #include "Engine/Engine.h"
 #include "Entities/Transform.h"
 #include "Entities/Mesh.h"
 #include "Engine/ObjParser.h"
+#include "Entities/Strategy.h"
+#include "Entities/Sun.h"
 
 int main() {
 	Parser a("resources/sphere.obj");
 	a.ReadFile();
-	
-	Transform transforms[] = {
-		{glm::vec3(2,0,0)},
-		{glm::vec3(5,0,0)},
-		{glm::vec3(10,10,10), glm::vec3(0.1)},
-		{glm::vec3(0,5,0)},
-	};
-
+		
 	Engine engine;
-	auto planet = std::make_unique<Planet>();
-	engine.AddEntity(std::move(planet));
-	for(auto& tf : transforms) {
-		planet = std::make_unique<Planet>(tf);
-		engine.AddEntity(std::move(planet));
+	auto transform = Transform(glm::vec3(0), glm::vec3(1));
+	auto sun = std::make_unique<Sun>(Mesh(a.GetVertices(), a.GetIndices()), transform);
+
+	for(auto i = 1; i < 5; i++)
+	{
+		auto strat = Strategy(5, i*M_PI/2);
+		auto trans = Transform(glm::vec3(0), glm::vec3(0.3));
+		sun->AddChild(
+			std::make_unique<Planet>(trans, Mesh(a.GetVertices(), a.GetIndices()), strat)
+		);
 	}
-	auto sphere_mesh = Mesh(a.GetVertices(), a.GetIndices());
-	auto sphere = std::make_unique<Planet>(Transform(glm::vec3(-5, -5, -5)), std::move(sphere_mesh));
-	engine.AddEntity(std::move(sphere));
+	
+	engine.AddEntity(std::move(sun));
 	engine.Mainloop();
 }

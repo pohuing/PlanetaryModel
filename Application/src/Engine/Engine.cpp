@@ -30,12 +30,9 @@ std::string readFile(const char* const &path)
 
 Engine::Engine() : m_camera(glm::vec3(0, 0, 0)) {
 	GlSetup();
+	m_sun_shader = Shaderprogram(readFile("resources/BasicVertexShader.shader"), readFile("resources/SunFragmentShader.shader"));
 	m_shaderprogramm = Shaderprogram(readFile("resources/BasicVertexShader.shader"), readFile("resources/BasicFragmentShader.shader"));
 	m_shaderprogramm.Bind();
-}
-
-void Engine::AddEntity(std::unique_ptr<IBody> entity) {
-	m_entities.push_back(std::move(entity));
 }
 
 int Engine::GlSetup() {
@@ -67,25 +64,39 @@ int Engine::GlSetup() {
 	glDebugMessageCallback(message_callback, 0);
 	std::cout << "Enabled GL debug output" << std::endl;
 #endif
-	glfwSwapInterval(1);
+	//glfwSwapInterval(1);
+
+
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 	
 	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	return 0;
 }
 
+void Engine::AddEntity(std::unique_ptr<IBody> entity) {
+	m_entities.push_back(std::move(entity));
+}
+
 void Engine::Mainloop() {
 	double mouse_x = 0, mouse_y = 0, old_mouse_x = 0, old_mouse_y = 0, mouse_diff_x = 0, mouse_diff_y = 0;
 	float old_time = 0, delta_time = 0;
+	m_shaderprogramm.Bind();
 	m_shaderprogramm.SetViewMatrix(glm::lookAt(glm::vec3(2, 0, 0), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
-
-	glm::mat4 projection = glm::perspective(glm::radians(90.f), (float)SCR_WIDTH / SCR_HEIGHT, 0.1f, 100.f);
+	glm::mat4 projection = glm::perspective(glm::radians(90.f), (float)SCR_WIDTH / SCR_HEIGHT, 0.1f, 1000.f);
 	m_shaderprogramm.SetProjectionMatrix(projection);
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	glEnable(GL_DEPTH_TEST);
-
 	m_shaderprogramm.SetLightColor(glm::vec3(0, 1, 0));
 	m_shaderprogramm.SetLightPosition(glm::vec3(10, 10, 10));
 	m_shaderprogramm.SetObjectColor(glm::vec3(1, 1, 1));
+
+	m_sun_shader.Bind();
+	m_sun_shader.SetViewMatrix(glm::lookAt(glm::vec3(2, 0, 0), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
+	m_sun_shader.SetProjectionMatrix(projection);
+
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	//glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glEnable(GL_DEPTH_TEST);
+
 
 	while(!glfwWindowShouldClose(m_window)) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -97,11 +108,6 @@ void Engine::Mainloop() {
 		auto current_time = glfwGetTime();
 		delta_time = current_time - old_time;
 		old_time = current_time;
-
-		m_entities[1]->Place(glm::vec3(sin(current_time) * 2, 0, 2));
-		m_entities[0]->Place(glm::vec3(0, sin(current_time) * 2, 4));
-		m_entities[5]->Place(glm::vec3(sin(current_time) * 3 + 10, 10, cos(current_time) * 3 + 10));
-
 
 		if(glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS) {
 			m_camera.ProcessKeyboard(RIGHT, delta_time);
@@ -127,11 +133,23 @@ void Engine::Mainloop() {
 		if(glfwGetKey(m_window, GLFW_KEY_E) == GLFW_PRESS) {
 			m_camera.ProcessMouseMovement(0, 0.1);
 		}
+		if(glfwGetKey(m_window, GLFW_KEY_I) == GLFW_PRESS)
+		{
+			m_entities[0]->Place(m_entities[0]->GetTransform().GetTranslation() + glm::vec3(1));
+		}
+		if(glfwGetKey(m_window, GLFW_KEY_K) == GLFW_PRESS)
+		{
+			m_entities[0]->Place(m_entities[0]->GetTransform().GetTranslation() + glm::vec3(-1));
+		}
 		m_camera.ProcessMouseMovement(mouse_diff_x, mouse_diff_y);
+		m_shaderprogramm.Bind();
 		m_shaderprogramm.SetViewPosition(m_camera.Position);
 		m_shaderprogramm.SetViewMatrix(m_camera.GetViewMatrix());
+		m_sun_shader.Bind();
+		m_sun_shader.SetViewMatrix(m_camera.GetViewMatrix());
+		m_sun_shader.SetViewPosition(m_camera.Position);
 		for(auto& entity : m_entities) {
-			entity->Update();
+			entity->Update(current_time);
 			entity->Draw(m_shaderprogramm);
 		}
 

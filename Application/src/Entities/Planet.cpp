@@ -71,26 +71,37 @@ namespace
 }
 
 
-Planet::Planet() : m_mesh(vertices, indices) {
+Planet::Planet()
+	: m_mesh(vertices, indices) {
 }
 
 Planet::Planet(Transform transform)
-	: m_mesh(vertices, indices), m_Transform(transform) {
+	: m_mesh(vertices, indices), m_transform(transform) {
 }
 
 Planet::Planet(Transform transform, Mesh&& mesh)
-	: m_mesh(std::move(mesh)), m_Transform(transform) {}
+	: m_mesh(std::move(mesh)), m_transform(transform) {}
+
+Planet::Planet(Transform transform, Mesh&& mesh, Strategy strategy)
+	: m_mesh(std::move(mesh)), m_transform(transform), m_strategy(strategy) {}
 
 void Planet::Draw(const Shaderprogram& shaderprogramm) {
 	shaderprogramm.Bind();
-	shaderprogramm.SetModelMatrix(m_Transform.GetModelMatrix());
+	shaderprogramm.SetModelMatrix(m_transform.GetModelMatrix());
 	m_mesh.Draw();
 }
 
-void Planet::Place(const Transform newPosition) {
-	m_Transform = newPosition;
+void Planet::Update(double time, Transform parent)
+{
+	// TODO: Figure out how to bind to other objects
+	auto newpos = m_strategy.Update(time, parent);
+	m_transform.SetTranslation(newpos.x, newpos.y, newpos.z);
+}
+
+void Planet::Place(const Transform new_position) {
+	m_transform = new_position;
 }
 
 Transform Planet::GetTransform() {
-	return m_Transform;
+	return m_transform;
 }
