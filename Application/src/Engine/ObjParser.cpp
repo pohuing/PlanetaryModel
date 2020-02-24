@@ -131,15 +131,15 @@ inline void Parser::ParseFace(const std::vector<std::string>& face)
 		auto vertex_normal_index = stoi(n);
 
 		// negative indices start from the back, positive at position 1
-		if(vertex_index < 0)
+		if(vertex_index <= 0)
 			vertex_index = m_vertexCoordinates.size() - vertex_index;
 		else
 			vertex_index--;
-		if(texture_location)
+		if(texture_location <= 0)
 			texture_location = m_textureCoordinates.size() - texture_location;
 		else
 			texture_location--;
-		if(vertex_normal_index < 0)
+		if(vertex_normal_index <= 0)
 			vertex_normal_index = m_vertexNormals.size() - vertex_normal_index;
 		else
 			vertex_normal_index--;
@@ -148,7 +148,7 @@ inline void Parser::ParseFace(const std::vector<std::string>& face)
 		m_vertices.push_back(Vertex{
 			m_vertexCoordinates[vertex_index],
 			m_vertexNormals[vertex_normal_index],
-			m_textureCoordinates[texture_location]});
+			texture_location ? m_textureCoordinates[texture_location] : TextureCoordinate()});
 		m_indices.push_back(m_vertices.size() - 1);
 	}
 }
