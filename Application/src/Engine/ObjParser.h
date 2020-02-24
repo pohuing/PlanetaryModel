@@ -10,6 +10,7 @@ namespace
 {	
 	typedef glm::vec3 VertexCoordinate;
 	typedef glm::vec3 VertexNormal;
+	typedef glm::vec3 TextureCoordinate;
 }
 
 class Parser {
@@ -23,6 +24,7 @@ private:
 	void ParseLine(const std::vector<std::string>& words);
 	void ParseGeometricVertex(const std::vector<std::string>& coordinates);
 	void ParseVertexNormals(const std::vector<std::string>& normals);
+	void ParseTextureCoordinate(const std::vector<std::string>& coordinates);
 	void ParseFace(const std::vector<std::string>& face);
 
 	std::string m_path;
@@ -30,4 +32,5 @@ private:
 	std::vector<unsigned int> m_indices;
 	std::vector<VertexCoordinate> m_vertexCoordinates;
 	std::vector<VertexNormal> m_vertexNormals;
+	std::vector<TextureCoordinate> m_textureCoordinates;
 };

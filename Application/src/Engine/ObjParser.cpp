@@ -52,7 +52,7 @@ void Parser::ParseLine(const std::vector<std::string>& words)
 	else if(words[0] == "vn")
 		ParseVertexNormals(words);
 	else if(words[0] == "vt")
-		std::cout << "Encountered texture coordinate, not supported yet" << std::endl;
+		ParseTextureCoordinate(words);
 	else if(words[0] == "vp")
 		std::cout << "Encountered free form geometry statement, not supported yet" << std::endl;
 	else if(words[0] == "f")
@@ -96,6 +96,21 @@ void Parser::ParseVertexNormals(const std::vector<std::string>& normals)
 	);
 }
 
+void Parser::ParseTextureCoordinate(const std::vector<std::string>& coordinates)
+{
+	if (coordinates.size() > 3)
+	{
+		std::cout << "Unexpectedly big Texture coordinate: " << std::endl;
+		for(const auto& texcoord : coordinates)
+			std::cout << texcoord << std::endl;
+	}
+
+	auto u = stof(coordinates[1]);
+	auto v = coordinates.size() >= 3 ? stof(coordinates[2]) : 0;
+	auto w = coordinates.size() == 4 ? stof(coordinates[3]) : 0;
+	m_textureCoordinates.emplace_back(u, v, w);
+}
+
 inline void Parser::ParseFace(const std::vector<std::string>& face)
 {
 	for (int i = 1; i < face.size(); i++)
@@ -108,8 +123,9 @@ inline void Parser::ParseFace(const std::vector<std::string>& face)
 		if(texture_start == texture_end)
 			t = "0";
 		else
-			t = word.substr(texture_start, word.find_last_of('/'));
+			t = word.substr(texture_start, texture_end - texture_start);
 		auto n = word.substr(word.find_last_of('/') + 1);
+		
 		auto vertex_index = stoi(v);
 		auto texture_location = stoi(t);
 		auto vertex_normal_index = stoi(n);
@@ -119,13 +135,20 @@ inline void Parser::ParseFace(const std::vector<std::string>& face)
 			vertex_index = m_vertexCoordinates.size() - vertex_index;
 		else
 			vertex_index--;
+		if(texture_location)
+			texture_location = m_textureCoordinates.size() - texture_location;
+		else
+			texture_location--;
 		if(vertex_normal_index < 0)
 			vertex_normal_index = m_vertexNormals.size() - vertex_normal_index;
 		else
 			vertex_normal_index--;
 
 		// TODO: Optimize Vertex generation to prevent duplicate Vertex definitions
-		m_vertices.push_back(Vertex{ m_vertexCoordinates[vertex_index],m_vertexNormals[vertex_normal_index] });
+		m_vertices.push_back(Vertex{
+			m_vertexCoordinates[vertex_index],
+			m_vertexNormals[vertex_normal_index],
+			m_textureCoordinates[texture_location]});
 		m_indices.push_back(m_vertices.size() - 1);
 	}
 }
