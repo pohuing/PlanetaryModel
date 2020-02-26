@@ -15,6 +15,11 @@ Transform::Transform(glm::vec3 translation, glm::vec3 scale)
 	: m_translation(translation), m_scale(scale) {
 	m_rotation = glm::vec3(0);
 }
+
+Transform::Transform(glm::vec3 translation, glm::vec3 scale, glm::vec3 rotation)
+	:m_translation(translation), m_scale(scale), m_rotation(rotation)
+{
+}
 ;
 
 glm::mat4 Transform::GetModelMatrix() const {

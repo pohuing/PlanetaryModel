@@ -33,13 +33,13 @@ int main() {
 	auto strat = Strategy(5, M_PI/2);
 	auto trans = Transform(glm::vec3(0), glm::vec3(0.3));
 	sun->AddChild(
-		std::make_unique<Planet>(trans, Mesh(earth.GetVertices(), earth.GetIndices(), std::move(earth_texture)), strat)
+		std::make_unique<Planet>(trans, Mesh(earth.GetVertices(), earth.GetIndices(), std::move(earth_texture)), Strategy(5, M_PI / 2, 0.5))
 	);
 
 	strat = Strategy(3, M_PI);
 	trans = Transform(glm::vec3(0), glm::vec3(0.1));
 	sun->AddChild(
-		std::make_unique<Planet>(trans, Mesh(mercury.GetVertices(), mercury.GetIndices(), std::move(mercury_texture)), strat)
+		std::make_unique<Planet>(trans, Mesh(mercury.GetVertices(), mercury.GetIndices(), std::move(mercury_texture)), Strategy(3, M_PI, 365/88 * 0.5))
 	);
 
 	
