@@ -63,6 +63,7 @@ int Engine::GlSetup() {
 		return -1;
 	}
 #ifdef DEBUG
+	// TODO: figure out why enabling these lines fixes the sun render
 	glEnable(GL_DEBUG_OUTPUT);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 	glDebugMessageCallback(message_callback, 0);
@@ -156,6 +157,10 @@ void Engine::Mainloop() {
 		if(glfwGetKey(m_window, GLFW_KEY_K) == GLFW_PRESS)
 		{
 			m_entities[0]->Place(m_entities[0]->GetTransform().GetTranslation() + glm::vec3(-1));
+		}
+		if(glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		{
+			glfwSetWindowShouldClose(m_window, true);
 		}
 		m_camera.ProcessMouseMovement(mouse_diff_x, mouse_diff_y);
 		m_shaderprogramm.Bind();
