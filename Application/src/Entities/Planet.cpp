@@ -72,11 +72,11 @@ namespace
 
 
 Planet::Planet()
-	: m_mesh(vertices, indices) {
+	: m_mesh(vertices, indices, STBImage()) {
 }
 
 Planet::Planet(Transform transform)
-	: m_mesh(vertices, indices), m_transform(transform) {
+	: m_mesh(vertices, indices, STBImage()), m_transform(transform) {
 }
 
 Planet::Planet(Transform transform, Mesh&& mesh)
@@ -88,6 +88,8 @@ Planet::Planet(Transform transform, Mesh&& mesh, Strategy strategy)
 void Planet::Draw(const Shaderprogram& shaderprogramm) {
 	shaderprogramm.Bind();
 	shaderprogramm.SetModelMatrix(m_transform.GetModelMatrix());
+	//TODO: make these dynamic
+	shaderprogramm.SetTextureSampler(0);
 	m_mesh.Draw();
 }
 

@@ -337,5 +337,4 @@ ASALocalRun/
 *.vcxproj
 
 # Exemptions
-!Application/resources/sphere.obj
-!Application/resources/cube.obj
+!Application/resources/*.obj

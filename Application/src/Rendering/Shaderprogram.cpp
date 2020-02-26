@@ -80,6 +80,12 @@ void Shaderprogram::SetObjectColor(glm::vec3 color) const {
 	SetUniform3f("objectColor", color);
 }
 
+void Shaderprogram::SetTextureSampler(int i) const
+{
+	SetUniform1i("objectTexture", i);
+}
+
+
 void Shaderprogram::SetUniformMatrix4f(const char* identifier, glm::mat4 value) const {
 	GLuint location = glGetUniformLocation(m_ID, identifier);
 	glUniformMatrix4fv(location, 1, GL_FALSE, &value[0][0]);
@@ -88,6 +94,12 @@ void Shaderprogram::SetUniformMatrix4f(const char* identifier, glm::mat4 value) 
 void Shaderprogram::SetUniform3f(const char* identifier, glm::vec3 value) const {
 	GLuint location = glGetUniformLocation(m_ID, identifier);
 	glUniform3fv(location, 1, &value[0]);
+}
+
+void Shaderprogram::SetUniform1i(const char* identifier, int i) const
+{
+	GLuint location = glGetUniformLocation(m_ID, identifier);
+	glUniform1i(location, i);
 }
 
 Shaderprogram& Shaderprogram::operator= ( Shaderprogram&& other ) noexcept {

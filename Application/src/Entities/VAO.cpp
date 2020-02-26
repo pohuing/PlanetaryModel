@@ -26,6 +26,9 @@ void VertexArrayObject::SetupAttribPointers() {
 
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, sizeof(Vertex), (const void*)offsetof(Vertex, m_Normal));
+
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_TRUE, sizeof(Vertex), (const void*)offsetof(Vertex, m_TexCoord));
 }
 
 VertexArrayObject& VertexArrayObject::operator= ( VertexArrayObject&& other ) noexcept {

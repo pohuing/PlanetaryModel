@@ -13,7 +13,7 @@ project "Application"
 
 	files { "Application/src/**.h", "Application/src/**.cpp" }
 	
-	includedirs {"ThirdParty/GLEW/include", "ThirdParty/GLFW/include", "ThirdParty/GLM"}
+	includedirs {"ThirdParty/GLEW/include", "ThirdParty/GLFW/include", "ThirdParty/GLM", "ThirdParty/STB"}
 	libdirs { "ThirdParty/GLEW/lib"}
 	
 	if _ACTION == "vs2019" then

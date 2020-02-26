@@ -68,7 +68,7 @@ int Engine::GlSetup() {
 	glDebugMessageCallback(message_callback, 0);
 	std::cout << "Enabled GL debug output" << std::endl;
 #endif
-	//glfwSwapInterval(1);
+	glfwSwapInterval(1);
 
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -91,7 +91,7 @@ void Engine::Mainloop() {
 	m_shaderprogramm.Bind();
 	m_shaderprogramm.SetViewMatrix(view);
 	m_shaderprogramm.SetProjectionMatrix(projection);
-	m_shaderprogramm.SetLightColor(glm::vec3(0, 1, 0));
+	m_shaderprogramm.SetLightColor(glm::vec3(1, 1, 1));
 	m_shaderprogramm.SetLightPosition(glm::vec3(10, 10, 10));
 	m_shaderprogramm.SetObjectColor(glm::vec3(1, 1, 1));
 
@@ -99,8 +99,8 @@ void Engine::Mainloop() {
 	m_sun_shader.SetViewMatrix(view);
 	m_sun_shader.SetProjectionMatrix(projection);
 
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	//glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	//glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 
 

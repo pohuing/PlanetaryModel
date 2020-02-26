@@ -4,15 +4,17 @@ layout(location = 0) out vec4 color;
 
 in vec3 Normal;
 in vec3 FragPos;
+in vec2 TexCoord;
 
 uniform vec3 lightPos;
 uniform vec3 viewPos;
 uniform vec3 lightColor;
 uniform vec3 objectColor;
+uniform sampler2D objectTexture;
 
 void main() {
 	// ambient gibts nicht im weltall
-	float ambientStrength = 0.0;
+	float ambientStrength = 0.10;
 	vec3 ambient = ambientStrength * lightColor;
 
 	// diffuse
@@ -29,5 +31,5 @@ void main() {
 	vec3 specular = specularStrength * spec * lightColor;
 
 	vec3 result = (ambient + diffuse + specular) * objectColor;
-	color = vec4(result, 1.0);
+	color = texture(objectTexture, TexCoord) * vec4(result, 1.0);
 };

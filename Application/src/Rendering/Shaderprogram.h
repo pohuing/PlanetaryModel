@@ -20,9 +20,11 @@ public:
 	void SetViewPosition(glm::vec3 position) const;
 	void SetLightColor(glm::vec3 color) const;
 	void SetObjectColor(glm::vec3 color) const;
-
+	void SetTextureSampler(int i) const;
+	
 	unsigned int m_ID = 0;
 private:
 	void SetUniformMatrix4f(const char* identifier, glm::mat4 value) const;
 	void SetUniform3f(const char* identifier, glm::vec3 value) const;
+	void SetUniform1i(const char* identifier, int i) const;
 };
