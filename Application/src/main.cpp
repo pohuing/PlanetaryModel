@@ -14,14 +14,14 @@
 
 int main() {
 	std::vector<std::string> planet_names;
-	planet_names.push_back("mercury");
-	planet_names.push_back("venus");
-	planet_names.push_back("earth");
-	planet_names.push_back("mars");
-	planet_names.push_back("jupiter");
-	planet_names.push_back("saturn");
-	planet_names.push_back("uranus");
-	planet_names.push_back("neptune");
+	planet_names.emplace_back("mercury");
+	planet_names.emplace_back("venus");
+	planet_names.emplace_back("earth");
+	planet_names.emplace_back("mars");
+	planet_names.emplace_back("jupiter");
+	planet_names.emplace_back("saturn");
+	planet_names.emplace_back("uranus");
+	planet_names.emplace_back("neptune");
 	
 	STBImage sun_texture("resources/sun.jpg");
 	Parser sun_mesh("resources/sun.obj");
@@ -61,6 +61,4 @@ int main() {
 	//	Mesh(earth.GetVertices(), earth.GetIndices(), std::move(earth_texture))
 	//	)));
 	engine.Mainloop();
-	
-	getchar();
 }

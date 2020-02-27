@@ -13,11 +13,13 @@ void Sun::AddChild(std::unique_ptr<IBody> child)
 
 void Sun::Draw(const Shaderprogram& shaderprogramm)
 {
-	shaderprogramm.SetModelMatrix(m_transform.GetModelMatrix());
-	m_mesh.Draw();
 	shaderprogramm.Bind();
 	shaderprogramm.SetLightPosition(m_transform.GetTranslation());
 	shaderprogramm.SetLightColor(glm::vec3(1, 1, 1));
+	shaderprogramm.SetModelMatrix(m_transform.GetModelMatrix());
+	shaderprogramm.SetIsSun(true);
+	m_mesh.Draw();
+	shaderprogramm.SetIsSun(false);
 	for (auto& child : m_children)
 	{
 		child->Draw(shaderprogramm);

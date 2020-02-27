@@ -85,6 +85,11 @@ void Shaderprogram::SetTextureSampler(int i) const
 	SetUniform1i("objectTexture", i);
 }
 
+void Shaderprogram::SetIsSun(bool value) const
+{
+	SetUniform1b("isSun", value);
+}
+
 
 void Shaderprogram::SetUniformMatrix4f(const char* identifier, glm::mat4 value) const {
 	GLuint location = glGetUniformLocation(m_ID, identifier);
@@ -100,6 +105,12 @@ void Shaderprogram::SetUniform1i(const char* identifier, int i) const
 {
 	GLuint location = glGetUniformLocation(m_ID, identifier);
 	glUniform1i(location, i);
+}
+
+void Shaderprogram::SetUniform1b(const char* identifier, bool value) const
+{
+	GLuint location = glGetUniformLocation(m_ID, identifier);
+	glUniform1i(location, value);
 }
 
 Shaderprogram& Shaderprogram::operator= ( Shaderprogram&& other ) noexcept {

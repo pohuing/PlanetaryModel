@@ -21,9 +21,11 @@ public:
 	void SetLightColor(glm::vec3 color) const;
 	void SetObjectColor(glm::vec3 color) const;
 	void SetTextureSampler(int i) const;
+	void SetIsSun(bool value) const;
 	
 	unsigned int m_ID = 0;
 private:
+	void SetUniform1b(const char* identifier, bool value) const;
 	void SetUniformMatrix4f(const char* identifier, glm::mat4 value) const;
 	void SetUniform3f(const char* identifier, glm::vec3 value) const;
 	void SetUniform1i(const char* identifier, int i) const;

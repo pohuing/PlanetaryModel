@@ -34,7 +34,6 @@ std::string readFile(const char* const &path)
 
 Engine::Engine() : m_camera(glm::vec3(0, 0, 0)) {
 	GlSetup();
-	m_sun_shader = Shaderprogram(readFile("resources/BasicVertexShader.shader"), readFile("resources/SunFragmentShader.shader"));
 	m_shaderprogramm = Shaderprogram(readFile("resources/BasicVertexShader.shader"), readFile("resources/BasicFragmentShader.shader"));
 	m_shaderprogramm.Bind();
 }
@@ -83,6 +82,47 @@ void Engine::AddEntity(std::unique_ptr<IBody> entity) {
 	m_entities.push_back(std::move(entity));
 }
 
+void Engine::HandleInput(double mouse_diff_x, double mouse_diff_y, float delta_time)
+{
+	if(glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS) {
+		m_camera.ProcessKeyboard(RIGHT, delta_time);
+	}
+	if(glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS) {
+		m_camera.ProcessKeyboard(LEFT, delta_time);
+	}
+	if(glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS) {
+		m_camera.ProcessKeyboard(FORWARD, delta_time);
+	}
+	if(glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS) {
+		m_camera.ProcessKeyboard(BACKWARD, delta_time);
+	}
+	if(glfwGetKey(m_window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+		m_camera.ProcessKeyboard(UP, delta_time);
+	}
+	if(glfwGetKey(m_window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+		m_camera.ProcessKeyboard(DOWN, delta_time);
+	}
+	if(glfwGetKey(m_window, GLFW_KEY_Q) == GLFW_PRESS) {
+		m_camera.ProcessMouseMovement(0, -0.1);
+	}
+	if(glfwGetKey(m_window, GLFW_KEY_E) == GLFW_PRESS) {
+		m_camera.ProcessMouseMovement(0, 0.1);
+	}
+	if(glfwGetKey(m_window, GLFW_KEY_I) == GLFW_PRESS)
+	{
+		m_entities[0]->Place(m_entities[0]->GetTransform().GetTranslation() + glm::vec3(1));
+	}
+	if(glfwGetKey(m_window, GLFW_KEY_K) == GLFW_PRESS)
+	{
+		m_entities[0]->Place(m_entities[0]->GetTransform().GetTranslation() + glm::vec3(-1));
+	}
+	if(glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	{
+		glfwSetWindowShouldClose(m_window, true);
+	}
+	m_camera.ProcessMouseMovement(mouse_diff_x, mouse_diff_y);
+}
+
 void Engine::Mainloop() {
 	double mouse_x = 0, mouse_y = 0, old_mouse_x = 0, old_mouse_y = 0, mouse_diff_x = 0, mouse_diff_y = 0;
 	float old_time = 0, delta_time = 0;
@@ -96,10 +136,6 @@ void Engine::Mainloop() {
 	m_shaderprogramm.SetLightPosition(glm::vec3(10, 10, 10));
 	m_shaderprogramm.SetObjectColor(glm::vec3(1, 1, 1));
 
-	m_sun_shader.Bind();
-	m_sun_shader.SetViewMatrix(view);
-	m_sun_shader.SetProjectionMatrix(projection);
-
 	//glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
@@ -112,9 +148,6 @@ void Engine::Mainloop() {
 			projection = glm::perspective(glm::radians(90.f), (float)SCR_WIDTH / SCR_HEIGHT, 0.1f, 1000.f);
 			m_shaderprogramm.Bind();
 			m_shaderprogramm.SetProjectionMatrix(projection);
-			m_sun_shader.Bind();
-			m_sun_shader.SetProjectionMatrix(projection);
-			
 			FRAMEBUFER_SIZE_CHANGED = false;
 		}
 		glfwGetCursorPos(m_window, &mouse_x, &mouse_y);
@@ -125,50 +158,11 @@ void Engine::Mainloop() {
 		auto current_time = glfwGetTime();
 		delta_time = current_time - old_time;
 		old_time = current_time;
+		HandleInput(mouse_diff_x, mouse_diff_y, delta_time);
 
-		if(glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS) {
-			m_camera.ProcessKeyboard(RIGHT, delta_time);
-		}
-		if(glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS) {
-			m_camera.ProcessKeyboard(LEFT, delta_time);
-		}
-		if(glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS) {
-			m_camera.ProcessKeyboard(FORWARD, delta_time);
-		}
-		if(glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS) {
-			m_camera.ProcessKeyboard(BACKWARD, delta_time);
-		}
-		if(glfwGetKey(m_window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-			m_camera.ProcessKeyboard(UP, delta_time);
-		}
-		if(glfwGetKey(m_window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-			m_camera.ProcessKeyboard(DOWN, delta_time);
-		}
-		if(glfwGetKey(m_window, GLFW_KEY_Q) == GLFW_PRESS) {
-			m_camera.ProcessMouseMovement(0, -0.1);
-		}
-		if(glfwGetKey(m_window, GLFW_KEY_E) == GLFW_PRESS) {
-			m_camera.ProcessMouseMovement(0, 0.1);
-		}
-		if(glfwGetKey(m_window, GLFW_KEY_I) == GLFW_PRESS)
-		{
-			m_entities[0]->Place(m_entities[0]->GetTransform().GetTranslation() + glm::vec3(1));
-		}
-		if(glfwGetKey(m_window, GLFW_KEY_K) == GLFW_PRESS)
-		{
-			m_entities[0]->Place(m_entities[0]->GetTransform().GetTranslation() + glm::vec3(-1));
-		}
-		if(glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		{
-			glfwSetWindowShouldClose(m_window, true);
-		}
-		m_camera.ProcessMouseMovement(mouse_diff_x, mouse_diff_y);
 		m_shaderprogramm.Bind();
 		m_shaderprogramm.SetViewPosition(m_camera.Position);
 		m_shaderprogramm.SetViewMatrix(m_camera.GetViewMatrix());
-		m_sun_shader.Bind();
-		m_sun_shader.SetViewMatrix(m_camera.GetViewMatrix());
-		m_sun_shader.SetViewPosition(m_camera.Position);
 		for(auto& entity : m_entities) {
 			entity->Update(current_time, Transform());
 			entity->Draw(m_shaderprogramm);

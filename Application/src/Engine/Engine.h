@@ -14,13 +14,13 @@ public:
 	Engine();
 	//~Engine();
 	void AddEntity(std::unique_ptr<IBody> entity);
-	int GlSetup();
 	void Mainloop();
 
 private:
+	int GlSetup();
+	void HandleInput(double mouse_diff_x, double mouse_diff_y, float delta_time);
 	std::vector<std::unique_ptr<IBody>> m_entities;
 	Shaderprogram m_shaderprogramm;
-	Shaderprogram m_sun_shader;
 	GLFWwindow* m_window = nullptr;
 	Camera m_camera;
 };

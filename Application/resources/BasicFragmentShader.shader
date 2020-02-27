@@ -10,6 +10,7 @@ uniform vec3 lightPos;
 uniform vec3 viewPos;
 uniform vec3 lightColor;
 uniform vec3 objectColor;
+uniform bool isSun;
 uniform sampler2D objectTexture;
 
 void main() {
@@ -31,5 +32,5 @@ void main() {
 	vec3 specular = specularStrength * spec * lightColor;
 
 	vec3 result = (ambient + diffuse + specular) * objectColor;
-	color = texture(objectTexture, TexCoord) * vec4(result, 1.0);
+	color = isSun ? vec4(1) : texture(objectTexture, TexCoord) * vec4(result, 1.0);
 };
