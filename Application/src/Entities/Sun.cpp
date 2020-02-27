@@ -6,7 +6,7 @@ Sun::Sun(Mesh mesh)
 Sun::Sun(Mesh mesh, Transform transform)
 	:m_transform(transform), m_mesh(std::move(mesh)), m_children(){}
 
-void Sun::AddChild(std::unique_ptr<Planet> child)
+void Sun::AddChild(std::unique_ptr<IBody> child)
 {
 	m_children.push_back(std::move(child));
 }
@@ -24,7 +24,7 @@ void Sun::Draw(const Shaderprogram& shaderprogramm)
 	}
 }
 
-void Sun::Update(double time)
+void Sun::Update(double time, Transform parent)
 {
 	for (auto& child:m_children)
 	{

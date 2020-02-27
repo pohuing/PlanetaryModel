@@ -170,7 +170,7 @@ void Engine::Mainloop() {
 		m_sun_shader.SetViewMatrix(m_camera.GetViewMatrix());
 		m_sun_shader.SetViewPosition(m_camera.Position);
 		for(auto& entity : m_entities) {
-			entity->Update(current_time);
+			entity->Update(current_time, Transform());
 			entity->Draw(m_shaderprogramm);
 		}
 

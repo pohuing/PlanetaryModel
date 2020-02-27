@@ -15,8 +15,7 @@ public:
 	~Planet() = default;
 
 	void Draw(const Shaderprogram& shaderprogram) override;
-	void Update(double time) override {};
-	void Update(double time, Transform parent);
+	void Update(double time, Transform parent) override;
 	void Place(Transform new_position) override;
 	Transform GetTransform() override;
 
