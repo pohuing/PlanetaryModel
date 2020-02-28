@@ -136,8 +136,7 @@ void Engine::Mainloop() {
 	m_shaderprogramm.SetLightPosition(glm::vec3(10, 10, 10));
 	m_shaderprogramm.SetObjectColor(glm::vec3(1, 1, 1));
 
-	//glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 
 

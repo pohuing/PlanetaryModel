@@ -4,7 +4,10 @@
 #include <iostream>
 
 Parser::Parser(std::string path)
-	:m_path(path) {}
+	:m_path(path)
+{
+	ReadFile();
+}
 
 void Parser::ReadFile() {
 	std::ifstream vstream(m_path);
@@ -21,6 +24,11 @@ std::vector<Vertex> Parser::GetVertices() const
 std::vector<unsigned int> Parser::GetIndices() const
 {
 	return m_indices;
+}
+
+Mesh Parser::GenerateMeshWithTexture(STBImage texture) const
+{
+	return { m_vertices, m_indices, std::move(texture) };
 }
 
 void Parser::Parse(std::stringstream& code){

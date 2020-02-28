@@ -2,7 +2,7 @@
 #include "../Rendering/Shaderprogram.h"
 #include "IBody.h"
 #include "Mesh.h"
-#include "Strategy.h"
+#include "CircularStrategy.h"
 #include "Transform.h"
 
 
@@ -11,7 +11,7 @@ public:
 	Planet();
 	Planet(Transform transform);
 	Planet(Transform transform, Mesh&& mesh);
-	Planet(Transform transform, Mesh&& mesh, Strategy strategy);
+	Planet(Transform transform, Mesh&& mesh, CircularStrategy strategy);
 	~Planet() = default;
 
 	void Draw(const Shaderprogram& shaderprogram) override;
@@ -22,5 +22,5 @@ public:
 private:
 	Mesh m_mesh;
 	Transform m_transform;
-	Strategy m_strategy;
+	CircularStrategy m_strategy;
 };

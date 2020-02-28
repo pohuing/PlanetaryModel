@@ -14,10 +14,6 @@ uniform bool isSun;
 uniform sampler2D objectTexture;
 
 void main() {
-	// ambient gibts nicht im weltall
-	float ambientStrength = 0.10;
-	vec3 ambient = ambientStrength * lightColor;
-
 	// diffuse
 	vec3 norm = normalize(Normal);
 	vec3 lightDir = normalize(lightPos - FragPos);
@@ -31,6 +27,6 @@ void main() {
 	float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
 	vec3 specular = specularStrength * spec * lightColor;
 
-	vec3 result = (ambient + diffuse + specular) * objectColor;
+	vec3 result = (diffuse + specular) * objectColor;
 	color = isSun ? vec4(1) : texture(objectTexture, TexCoord) * vec4(result, 1.0);
 };

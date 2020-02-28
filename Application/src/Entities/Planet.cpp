@@ -82,7 +82,7 @@ Planet::Planet(Transform transform)
 Planet::Planet(Transform transform, Mesh&& mesh)
 	: m_mesh(std::move(mesh)), m_transform(transform) {}
 
-Planet::Planet(Transform transform, Mesh&& mesh, Strategy strategy)
+Planet::Planet(Transform transform, Mesh&& mesh, CircularStrategy strategy)
 	: m_mesh(std::move(mesh)), m_transform(transform), m_strategy(strategy) {}
 
 void Planet::Draw(const Shaderprogram& shaderprogramm) {

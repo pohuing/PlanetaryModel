@@ -4,6 +4,8 @@
 #include <sstream>
 #include <vector>
 #include "../Entities/Vertex.h"
+#include "../Entities/Mesh.h"
+#include "../Entities/STBImage.h"
 #include <GLM/glm.hpp>
 
 namespace 
@@ -16,10 +18,12 @@ namespace
 class Parser {
 public:
 	Parser(std::string path);
-	void ReadFile();
 	std::vector<Vertex> GetVertices() const;
 	std::vector<unsigned int> GetIndices() const;
+	Mesh GenerateMeshWithTexture(STBImage texture) const;
+	
 private:
+	void ReadFile();
 	void Parse(std::stringstream& code);
 	void ParseLine(const std::vector<std::string>& words);
 	void ParseGeometricVertex(const std::vector<std::string>& coordinates);

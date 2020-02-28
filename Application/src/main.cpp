@@ -9,7 +9,7 @@
 #include "Entities/Transform.h"
 #include "Entities/Mesh.h"
 #include "Engine/ObjParser.h"
-#include "Entities/Strategy.h"
+#include "Entities/CircularStrategy.h"
 #include "Entities/Sun.h"
 
 int main() {
@@ -23,42 +23,25 @@ int main() {
 	planet_names.emplace_back("uranus");
 	planet_names.emplace_back("neptune");
 	
-	STBImage sun_texture("resources/sun.jpg");
 	Parser sun_mesh("resources/sun.obj");
-	sun_mesh.ReadFile();
 	
 	Engine engine;
 	auto transform = Transform(glm::vec3(0), glm::vec3(1));
-	auto sun = std::make_unique<Sun>(Mesh(sun_mesh.GetVertices(), sun_mesh.GetIndices(), std::move(sun_texture)), transform);
+	auto sun = std::make_unique<Sun>(sun_mesh.GenerateMeshWithTexture(STBImage()), transform);
 
 	for (auto i = 0; i < planet_names.size(); i++)
 	{
 		auto name = planet_names[i];
 		Parser planet("resources/" + name + ".obj");
-		planet.ReadFile();
 		STBImage texture("resources/" + name + ".jpg");
 		sun->AddChild(
 			std::make_unique<Planet>(
 				Transform(glm::vec3(0)),
-				Mesh(planet.GetVertices(), planet.GetIndices(), std::move(texture)),
-				Strategy(3 + i + 1, M_PI / 2 * i, 0.01)
+				planet.GenerateMeshWithTexture(std::move(texture)),
+				CircularStrategy(3 + i*2 + 1, M_PI / 2 * i, (planet_names.size() - i + 1)/2)
 				));
 	}
 
 	engine.AddEntity(std::move(sun));
-
-	//Parser cube("resources/cubey.obj");
-	//cube.ReadFile();
-	//STBImage cubey_texture("resources/cubey.jpg");
-	//engine.AddEntity(std::move(std::make_unique<Planet>(
-	//	Transform({ 5, 5, 5 }),
-	//	Mesh(cube.GetVertices(), cube.GetIndices(), std::move(cubey_texture))
-	//	)));
-
-
-	//engine.AddEntity(std::move(std::make_unique<Planet>(
-	//	Transform({ -5, 5, 5 }),
-	//	Mesh(earth.GetVertices(), earth.GetIndices(), std::move(earth_texture))
-	//	)));
 	engine.Mainloop();
 }
